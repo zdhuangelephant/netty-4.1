@@ -135,6 +135,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         setChannelOptions(channel, options0().entrySet().toArray(EMPTY_OPTION_ARRAY), logger);
         setAttributes(channel, attrs0().entrySet().toArray(EMPTY_ATTRIBUTE_ARRAY));
 
+        // 拿到这个channel所属于的ChannelPipeline
         ChannelPipeline p = channel.pipeline();
 
         final EventLoopGroup currentChildGroup = childGroup;
@@ -143,10 +144,12 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
                 childOptions.entrySet().toArray(EMPTY_OPTION_ARRAY);
         final Entry<AttributeKey<?>, Object>[] currentChildAttrs = childAttrs.entrySet().toArray(EMPTY_ATTRIBUTE_ARRAY);
 
+        // 对刚刚获取的ChannelPipeline进行初始化...
         p.addLast(new ChannelInitializer<Channel>() {
             @Override
             public void initChannel(final Channel ch) {
                 final ChannelPipeline pipeline = ch.pipeline();
+                // 拿到main方法传入的自定义Handler类
                 ChannelHandler handler = config.handler();
                 if (handler != null) {
                     pipeline.addLast(handler);

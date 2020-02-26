@@ -99,7 +99,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
      * You either use this or {@link #channelFactory(io.netty.channel.ChannelFactory)} if your
      * {@link Channel} implementation has no no-args constructor.
      * <br/>
-     * 设置服务端ServerSocketChannel
+     * 设置服务端ServerSocketChannel、这个channelClass是main方法传入的NioServerSocketChannel.class
      */
     public B channel(Class<? extends C> channelClass) {
         return channelFactory(new ReflectiveChannelFactory<C>(
@@ -239,6 +239,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
 
     /**
      * Create a new {@link Channel} and bind it.
+     * 创建Channel并且将其绑定到Selector上
      */
     public ChannelFuture bind(int inetPort) {
         return bind(new InetSocketAddress(inetPort));
@@ -320,8 +321,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     final ChannelFuture initAndRegister() {
         Channel channel = null;
         try {
-            // 创建一个新的Channel
-            channel = channelFactory.newChannel();
+            // 创建一个新的Channel、通过main方法传入的NioServerSocketChannel
+            channel = channelFactory.newChannel(); // channel就是NioServerSocketChannel。
             // // 调用抽象方法, 子类来做初始化
             init(channel);
         } catch (Throwable t) {
@@ -337,6 +338,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         }
 
         // // 创建成功则将这个channel注册到eventloop中
+        // group()返回的NioEventLoopGroup实例。
         ChannelFuture regFuture = config().group().register(channel);
         // 如果注册出错
         if (regFuture.cause() != null) {
@@ -370,6 +372,11 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         return regFuture;
     }
 
+    /**
+     * 抽象的Channel初始化方法定义。客户端和服务端的实现各不相同。
+     * @param channel
+     * @throws Exception
+     */
     abstract void init(Channel channel) throws Exception;
 
     // 这个方法在channelRegistered()方法触发前被调用.

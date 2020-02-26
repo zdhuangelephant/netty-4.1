@@ -109,6 +109,7 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
 
     /**
      * Return the {@link EventLoop} this {@link Channel} was registered to.
+     * 返回 Channel被分配到的EventLoop实例，即返回的实例就是NioEventLoop(只有一个线程的线程池)
      */
     EventLoop eventLoop();
 

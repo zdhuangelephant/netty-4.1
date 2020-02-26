@@ -50,6 +50,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
     private static final InternalLogger logger =
             InternalLoggerFactory.getInstance(AbstractNioChannel.class);
 
+    // 只是jdk的ServerSocketChannel
     private final SelectableChannel ch;
     protected final int readInterestOp;
     volatile SelectionKey selectionKey;
@@ -79,7 +80,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
     protected AbstractNioChannel(Channel parent, SelectableChannel ch, int readInterestOp) {
         super(parent);
 
-        // ch就是通过反射调用newSocket()，其返回的NioServerSocketChannel实例
+        // ch就是通过反射调用newSocket()，ServerSocketChannel实例
         this.ch = ch;
         this.readInterestOp = readInterestOp;  // OP_ACCEPT 事件
         try {
@@ -107,6 +108,10 @@ public abstract class AbstractNioChannel extends AbstractChannel {
     }
 
 
+    /**
+     *
+     * @return 服务端的channel、即ServerSocketChannel
+     */
     protected SelectableChannel javaChannel() {
         return ch;
     }

@@ -65,6 +65,8 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
     /**
      * Creates a new instance.
      *
+     * 每一个Channel都会有一个channelId、读写委派的Unsafe实例和ChannelPipeline。
+     *
      * @param parent
      *        the parent of this channel. {@code null} if there's no parent.
      */
@@ -485,6 +487,14 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
             }
         }
 
+        /**
+         *
+         * 回调顺序:
+         *      1、handlerAdd
+         *      2、channelRegistered
+         *      3、channelActive
+         * @param promise
+         */
         private void register0(ChannelPromise promise) {
             try {
                 // check if the channel is still open as it could be closed in the mean time when the register

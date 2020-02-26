@@ -26,8 +26,13 @@ import java.lang.reflect.Constructor;
  */
 public class ReflectiveChannelFactory<T extends Channel> implements ChannelFactory<T> {
 
+    // NioServerSocketChannel类的构造器
     private final Constructor<? extends T> constructor;
 
+    /**
+     *
+     * @param clazz 这是main方法传入的NioServerSocketChannel.class
+     */
     public ReflectiveChannelFactory(Class<? extends T> clazz) {
         ObjectUtil.checkNotNull(clazz, "clazz");
         try {

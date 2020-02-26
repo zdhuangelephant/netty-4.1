@@ -54,7 +54,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * {@link Selector} and so does the multi-plexing of these in the event loop.
  *
  *
- *  * 在创建boosGroup或者workGroup的时候，会创建NioEventLoop
+ *  * 在创建boosGroup或者workGroup的时候，会创建NioEventLoop; 换句话说，NioEventLoop是一个只有一个工作线程的线程池
  *  *
  *  * NioEventLoop是一个SingleThreadEventLoop的实现, 将每个Channel注册到NIO Selector并执行multiplexing[IO多路复用].
  *  *
